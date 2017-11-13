@@ -37,9 +37,10 @@ class Record{
   
   void draw(){
     
-    fill(200);
+    fill(0);
     rect(currentPos.x - RecordW/2, currentPos.y - RecordW/2, RecordW, RecordW);
-    fill(0, 133, 201);
+    //fill(0, 133, 201);
+    fill(255);
     text(keyNum, currentPos.x, currentPos.y + RecordW *0.2);
   }
   

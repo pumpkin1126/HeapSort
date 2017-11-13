@@ -1,8 +1,11 @@
 
+boolean isAsc_global = false;
+
 class SortSystem implements Delegate{
   
   boolean isFirstHeap;
   boolean isUpdatable;
+  boolean isAsc;
   int recordCurrentIndex;
   Timer timer;
   Heap heap;
@@ -10,6 +13,7 @@ class SortSystem implements Delegate{
   SortSystem(){
     isFirstHeap = true;
     isUpdatable = true;
+    isAsc = isAsc_global;
     heap = new Heap(records.length);
     recordCurrentIndex = 0;
   }
@@ -21,11 +25,11 @@ class SortSystem implements Delegate{
     
     boolean isFinish = false;
     if(isFirstHeap){
-      heap.push(records[recordCurrentIndex++]);
+      heap.push(records[recordCurrentIndex++], isAsc);
       if(recordCurrentIndex == records.length)  isFirstHeap = false;
     }
     else{
-      heap.deleteMaximum();
+      heap.deleteMaximum(isAsc);
       recordCurrentIndex--;
       
       if(recordCurrentIndex == 0){
@@ -35,7 +39,9 @@ class SortSystem implements Delegate{
     }
     
     if(!isFinish){
-      timer = new Timer(RecordMoveSec, this);
+      float sec = RecordMoveSec;
+      if(!isFirstHeap)  sec += 0.5f;
+      timer = new Timer(sec, this);
       isUpdatable = false;
     }else{
       timer = null;

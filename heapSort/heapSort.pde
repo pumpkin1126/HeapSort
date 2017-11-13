@@ -1,7 +1,7 @@
 
-final float RecordMoveSec = 0.5f;
+final float RecordMoveSec = 0.2f;
 final boolean isRandomData = true;
-final int RandomAmount = 30;
+final int RandomAmount = 50;
 
 Record[] records;
 
@@ -12,11 +12,26 @@ MyArray array;
 boolean isKeyPressing;
 boolean isStopping;
 
+HashMap<String, Button> buttonList;
+
 void setup(){
   size(1000, 1000);
   textAlign(CENTER);
   textSize(30);
   
+  buttonList = new HashMap<String, Button>();
+  buttonList.put("initialize", new InitialButton(new PVector(width/40, width/40), loadImage("initial.png")));
+  PImage[] imgs = {loadImage("pause.png"), loadImage("play.png")};
+  buttonList.put("play", new PlayButton(new PVector(width/40*3, width/40), imgs));
+  imgs = new PImage[]{loadImage("desc.png"), loadImage("asc.png")};
+  buttonList.put("asc", new AscButton(new PVector(width/40*5, width/40), imgs));
+  
+  initialize();
+  
+  isKeyPressing = false;
+}
+
+int[] generateKeys(){
   int[] keys;
   if(!isRandomData)  keys = new int[]{42, 33, 78, 19, 46, 63, 25, 11, 54, 17};
   else{
@@ -24,6 +39,14 @@ void setup(){
     for(int i = 0; i < RandomAmount; i++)
       keys[i] = (int)random(0, 100);
   }
+  
+  return keys;
+}
+
+void initialize(){
+  ((PlayButton)buttonList.get("play")).initial();
+  
+  int[] keys = generateKeys();
   
   generator = new Generator(keys.length);
   array = new MyArray(keys.length);
@@ -33,11 +56,12 @@ void setup(){
   
   sortSystem = new SortSystem();
   
-  isStopping    = false;
-  isKeyPressing = false;
+  isStopping    = true;
 }
 
 void draw(){
+  
+  for(Button button : buttonList.values())  button.checkClick(mousePressed);
   
   background(255);
   if(!isStopping)  sortSystem.sortUpdate();
@@ -48,6 +72,8 @@ void draw(){
     if(!isStopping)  record.update();
     record.draw();
   }
+  
+  for(Button button : buttonList.values())  button.draw();
 }
 
 void keyPressed(){

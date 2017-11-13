@@ -10,14 +10,14 @@ class Heap{
     heap = new Record[_size];
   }
   
-  void push(Record record){
+  void push(Record record, boolean isAsc){
     currentSize++;
     heap[currentSize-1] = record;
     
     int k = currentSize-1;
     
     //ノードの交換
-    while(heap[k].keyNum > heap[(k-1)/2].keyNum && k > 0){
+    while((heap[k].keyNum < heap[(k-1)/2].keyNum) == isAsc && k > 0){
       Record temp = heap[k];
       heap[k] = heap[(k-1)/2];
       heap[(k-1)/2] = temp;
@@ -32,7 +32,7 @@ class Heap{
     heap[k].SetDestination(generator.nodes[k]);
   }
   
-  void deleteMaximum(){
+  void deleteMaximum(boolean isAsc){
     
     //最大値を配列エリアに移動
     heap[0].SetDestination(array.GetNextIndexPosition());
@@ -50,7 +50,7 @@ class Heap{
     while(k*2 + 1 < currentSize){
       //子が一つの場合
       if(k*2+1 == currentSize-1){
-        if(heap[k].keyNum < heap[k*2+1].keyNum){
+        if((heap[k].keyNum > heap[k*2+1].keyNum) == isAsc){
           Record temp = heap[k*2+1];
           heap[k*2+1] = heap[k];
           heap[k]     = temp;
@@ -66,10 +66,10 @@ class Heap{
       //子が二つの場合
       else{
         int big;
-        if(heap[k*2+1].keyNum > heap[k*2+2].keyNum)  big = k*2+1;
+        if((heap[k*2+1].keyNum < heap[k*2+2].keyNum) == isAsc)  big = k*2+1;
         else                                         big = k*2+2;
         
-        if(heap[k].keyNum < heap[big].keyNum){
+        if((heap[k].keyNum > heap[big].keyNum) == isAsc){
           Record temp = heap[big];
           heap[big]   = heap[k];
           heap[k]     = temp;

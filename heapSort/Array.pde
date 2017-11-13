@@ -16,6 +16,10 @@ class MyArray{
     firstPos = new PVector(RecordW * 1.5f, RecordW * 1.5f);
   }
   
+  void initialize(){
+    count = 0;
+  }
+  
   //SortSystemから呼ばれる
   void AddCount(){ count++; }
   
