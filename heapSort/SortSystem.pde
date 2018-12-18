@@ -40,7 +40,7 @@ class SortSystem implements Delegate{
     
     if(!isFinish){
       float sec = RecordMoveSec;
-      if(!isFirstHeap)  sec += 0.5f;
+      if(!isFirstHeap)  sec += Interval;
       timer = new Timer(sec, this);
       isUpdatable = false;
     }else{

@@ -1,7 +1,8 @@
 
+final float Interval = 0.01f;
 final float RecordMoveSec = 0.2f;
 final boolean isRandomData = true;
-final int RandomAmount = 50;
+final int RandomAmount = 100;
 
 Record[] records;
 
